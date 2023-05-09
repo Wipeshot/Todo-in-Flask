@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo</title>
+</head>
+    <body>
+        <form action="/add" method="POST">
+            <label for="value">Todo value:</label>
+            <input type="text" id="value" name="value" placeholder="Todo value">
+            <label for="deadline">Deadline:</label>
+            <input type="date" id="deadline" name="deadline" placeholder="Deadline">
+            <label for="priority">Priority (1-5):</label>
+            <input type="number" id="priority" name="priority" placeholder="Priority (1-5)" min="1" max="5">
+            <button type="submit">Add</button>
+        </form>
+        <h1>Offene Todos</h1>
+        <ul>
+            {% for todo in todos %}
+                <li>{{ todo.value }} ({{ todo.start }} - {{ todo.deadline }})
+                    <form action="/remove/{{ todo.id }}" method="POST" style="display: inline;">
+                        <button type="submit">Remove</button>
+                    </form>
+                    <form action="/todo/finish/{{ todo.id }}" method="POST" style="display: inline;">
+                        <button type="submit">Finish</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+        <h1>Geschlossene Todos</h1>
+            <ul>
+            {% for todo in closed_todos %}
+                <li>{{ todo.value }} ({{ todo.start }} - {{ todo.end }})
+                    <form action="/remove/{{ todo.id }}" method="POST" style="display: inline;">
+                        <button type="submit">Remove</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>
