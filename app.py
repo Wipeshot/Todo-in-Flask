@@ -42,35 +42,47 @@ def index():
 
 @app.route('/add', methods=['POST'])
 def add_todo():
-    value = request.form['value']
-    start = datetime.now()
-    deadline_str = request.form.get('deadline')
-    if deadline_str:
-        deadline = datetime.strptime(deadline_str, '%Y-%m-%d').date()
-    else:
-        deadline = None
-    priority = int(request.form['priority'])
-    todo = Todo(value=value, start=start, deadline=deadline, priority=priority, position=0, open=True)
-    db.session.add(todo)
-    db.session.commit()
-    return redirect('/')
+    try:
+        value = request.form['value']
+        start = datetime.now()
+        deadline_str = request.form.get('deadline')
+        if deadline_str:
+            deadline = datetime.strptime(deadline_str, '%Y-%m-%d').date()
+        else:
+            deadline = None
+        priority = int(request.form['priority'])
+        todo = Todo(value=value, start=start, deadline=deadline, priority=priority, position=0, open=True)
+        db.session.add(todo)
+        db.session.commit()
+    except ValueError:
+        print(f'Todo konnte nicht erstellt werden')
+    finally:
+        return redirect('/')
 
 
 @app.route('/remove/<int:id>', methods=['POST'])
 def remove_todo(id):
-    todo = Todo.query.get_or_404(id)
-    db.session.delete(todo)
-    db.session.commit()
-    return redirect('/')
+    try:
+        todo = Todo.query.get_or_404(id)
+        db.session.delete(todo)
+        db.session.commit()
+    except ValueError:
+        print(f'Todo konnte nicht gelöscht werden')
+    finally:
+        return redirect('/')
 
 
 @app.route('/todo/finish/<int:id>', methods=['POST'])
 def finish_todo(id):
-    todo = Todo.query.get_or_404(id)
-    todo.open = False
-    todo.end = datetime.now()
-    db.session.commit()
-    return redirect('/')
+    try:
+        todo = Todo.query.get_or_404(id)
+        todo.open = False
+        todo.end = datetime.now()
+        db.session.commit()
+    except ValueError:
+        print(f'Todo konnte nicht geschlossen werden')
+    finally:
+        return redirect('/')
 
 
 if __name__ == '__main__':
