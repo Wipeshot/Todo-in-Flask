@@ -34,7 +34,11 @@
                     <form action="/todo/finish/{{ todo.id }}" method="POST" style="display: inline;">
                         <button class="open" type="submit"></button>
                     </form>
-                    {{ todo.value }} ({{ todo.start }} - {{ todo.deadline }})
+                    <div class="content">
+                        <h1>{{ todo.value }}</h1>
+                        <p>(Start: {{ todo.start }} - Deadline: {{ todo.deadline }})</p>
+                    </div>
+                    <h4>Priorität: {{ todo.priority }}</h4>
                     <form action="/remove/{{ todo.id }}" method="POST" style="display: inline;">
                         <button class="delete" type="submit"></button>
                     </form>
@@ -43,7 +47,9 @@
             {% endfor %}
         </ul>
         </div>
-        <h1>Geschlossene Todos</h1>
+
+    <button class="toggle_button"><h1>Geschlossene Todos ▲</h1></button>
+
     <div class="closed_todo">
         <ul>
             {% for todo in closed_todos %}
@@ -51,7 +57,11 @@
                     <form action="/todo/reopen/{{ todo.id }}" method="POST" style="display: inline;">
                         <button class="finished" type="submit" /></button>
                     </form>
-                    {{ todo.value }} ({{ todo.start }} - {{ todo.end }})
+                    <div class="content">
+                        <h1>{{ todo.value }}</h1>
+                        <p>(Start: {{ todo.start }} - Beendet: {{ todo.end }})</p>
+                    </div>
+                    <h4>Priorität: {{ todo.priority }}</h4>
                     <form action="/remove/{{ todo.id }}" method="POST" style="display: inline;">
                         <button class="delete" type="submit"></button>
                     </form>
@@ -60,5 +70,21 @@
         </ul>
     </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+$(document).ready(function() {
+    $('.closed_todo').hide();
+    $('.toggle_button').click(function() {
+        $('.closed_todo').toggle();
+        var buttonHtml = $('.toggle_button').html();
+        if (buttonHtml === '<h1>Geschlossene Todos ▲</h1>') {
+            $('.toggle_button').html('<h1>Geschlossene Todos ▼</h1>');
+        } else {
+            $('.toggle_button').html('<h1>Geschlossene Todos ▲</h1>');
+        }
+    });
+});
+
+    </script>
     </body>
 </html>
