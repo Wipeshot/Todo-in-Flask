@@ -85,5 +85,18 @@ def finish_todo(id):
         return redirect('/')
 
 
+@app.route('/todo/reopen/<int:id>', methods=['POST'])
+def reopen_todo(id):
+    try:
+        todo = Todo.query.get_or_404(id)
+        todo.open = True
+        todo.end = datetime.now()
+        db.session.commit()
+    except ValueError:
+        print(f'Todo konnte nicht wieder geöffnet werden')
+    finally:
+        return redirect('/')
+
+
 if __name__ == '__main__':
     app.run()

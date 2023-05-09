@@ -6,37 +6,59 @@
     <link rel= "stylesheet" type= "text/css" href="{{ url_for('static', filename='todo.css')}}">
 </head>
     <body>
+    <div class="todo__app">
+        <div class="header">
         <form action="/add" method="POST">
-            <label for="value">Todo value:</label>
-            <input type="text" id="value" name="value" placeholder="Todo value">
-            <label for="deadline">Deadline:</label>
-            <input type="date" id="deadline" name="deadline" placeholder="Deadline">
-            <label for="priority">Priority (1-5):</label>
-            <input type="number" id="priority" name="priority" placeholder="Priority (1-5)" min="1" max="5">
+            <div class="input">
+                <div>
+                <label for="value">Todo:</label>
+                <input type="text" id="value" name="value" placeholder="">
+            </div>
+            <div>
+                <label for="deadline">Deadline:</label>
+                <input type="date" id="deadline" name="deadline" placeholder="">
+            </div>
+            <div>
+                <label for="priority">Priorität:</label>
+                <input type="number" id="priority" name="priority" value="1" min="1" max="5">
+            </div>
+            </div>
             <button type="submit">Add</button>
         </form>
+    </div>
         <h1>Offene Todos</h1>
-        <ul>
-            {% for todo in todos %}
-                <li>{{ todo.value }} ({{ todo.start }} - {{ todo.deadline }})
-                    <form action="/remove/{{ todo.id }}" method="POST" style="display: inline;">
-                        <button type="submit">Remove</button>
-                    </form>
-                    <form action="/todo/finish/{{ todo.id }}" method="POST" style="display: inline;">
-                        <button type="submit">Finish</button>
-                    </form>
-                </li>
-            {% endfor %}
-        </ul>
-        <h1>Geschlossene Todos</h1>
+        <div class="opened_todo">
             <ul>
-            {% for todo in closed_todos %}
-                <li>{{ todo.value }} ({{ todo.start }} - {{ todo.end }})
+            {% for todo in todos %}
+                <li>
+                    <form action="/todo/finish/{{ todo.id }}" method="POST" style="display: inline;">
+                        <button class="open" type="submit"></button>
+                    </form>
+                    {{ todo.value }} ({{ todo.start }} - {{ todo.deadline }})
                     <form action="/remove/{{ todo.id }}" method="POST" style="display: inline;">
-                        <button type="submit">Remove</button>
+                        <button class="delete" type="submit"></button>
+                    </form>
+
+                </li>
+            {% endfor %}
+        </ul>
+        </div>
+        <h1>Geschlossene Todos</h1>
+    <div class="closed_todo">
+        <ul>
+            {% for todo in closed_todos %}
+                <li>
+                    <form action="/todo/reopen/{{ todo.id }}" method="POST" style="display: inline;">
+                        <button class="finished" type="submit" /></button>
+                    </form>
+                    {{ todo.value }} ({{ todo.start }} - {{ todo.end }})
+                    <form action="/remove/{{ todo.id }}" method="POST" style="display: inline;">
+                        <button class="delete" type="submit"></button>
                     </form>
                 </li>
             {% endfor %}
         </ul>
+    </div>
+    </div>
     </body>
 </html>
