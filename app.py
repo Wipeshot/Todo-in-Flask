@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, IntegerField
@@ -32,12 +32,33 @@ class Todo(db.Model):
 with app.app_context():
     db.create_all()
 
+activeFilter = 'none'
+
 
 @app.route('/')
 def index():
-    todos = Todo.query.filter_by(open=True).all()
-    finished_todos = Todo.query.filter_by(open=False).all()
-    return render_template('todo-list.html', todos=todos, closed_todos=finished_todos)
+    global activeFilter
+    todos_query = Todo.query.filter_by(open=True)
+    if activeFilter == 'prio_asc':
+        todos_query = todos_query.order_by(Todo.priority.asc())
+    elif activeFilter == 'prio_desc':
+        todos_query = todos_query.order_by(Todo.priority.desc())
+    elif activeFilter == 'deadline_asc':
+        todos_query = todos_query.order_by(Todo.deadline.asc())
+    elif activeFilter == 'deadline_desc':
+        todos_query = todos_query.order_by(Todo.deadline.desc())
+    todos = todos_query.all()
+    finished_todos_query = Todo.query.filter_by(open=False)
+    finished_todos = finished_todos_query.all()
+    filters = [
+        {'value': 'none', 'label': 'Standard'},
+        {'value': 'prio_asc', 'label': 'Priorität (aufsteigend)'},
+        {'value': 'prio_desc', 'label': 'Priorität (absteigend)'},
+        {'value': 'deadline_asc', 'label': 'Deadline (aufsteigend)'},
+        {'value': 'deadline_desc', 'label': 'Deadline (absteigend)'}
+    ]
+    return render_template('todo-list.html', todos=todos, closed_todos=finished_todos, filters=filters,
+                           activeFilter=activeFilter)
 
 
 @app.route('/add', methods=['POST'])
@@ -96,6 +117,14 @@ def reopen_todo(id):
         print(f'Todo konnte nicht wieder geöffnet werden')
     finally:
         return redirect('/')
+
+
+@app.route('/filter/<filter>', methods=['POST'])
+def set_filter(filter):
+    global activeFilter
+    activeFilter = filter
+    index()
+    return redirect('/')
 
 
 if __name__ == '__main__':

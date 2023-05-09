@@ -142,3 +142,16 @@ div.header form div.input {
     background: transparent;
     cursor: pointer;
 }
+
+.filter {
+    border: black 0.1rem solid;
+    border-radius: 0.3rem;
+    background: transparent;
+}
+
+div.open_header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

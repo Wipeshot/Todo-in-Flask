@@ -3,32 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Todo</title>
-    <link rel= "stylesheet" type= "text/css" href="{{ url_for('static', filename='todo.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='todo.css') }}">
 </head>
-    <body>
-    <div class="todo__app">
-        <div class="header">
+<body>
+<div class="todo__app">
+    <div class="header">
         <form action="/add" method="POST">
             <div class="input">
                 <div>
-                <label for="value">Todo:</label>
-                <input type="text" id="value" name="value" placeholder="">
-            </div>
-            <div>
-                <label for="deadline">Deadline:</label>
-                <input type="date" id="deadline" name="deadline" placeholder="">
-            </div>
-            <div>
-                <label for="priority">Priorität:</label>
-                <input type="number" id="priority" name="priority" value="1" min="1" max="5">
-            </div>
+                    <label for="value">Todo:</label>
+                    <input type="text" id="value" name="value" placeholder="">
+                </div>
+                <div>
+                    <label for="deadline">Deadline:</label>
+                    <input type="date" id="deadline" name="deadline" placeholder="">
+                </div>
+                <div>
+                    <label for="priority">Priorität:</label>
+                    <input type="number" id="priority" name="priority" value="1" min="1" max="5">
+                </div>
             </div>
             <button type="submit">Add</button>
         </form>
     </div>
+    <div class="open_header">
         <h1>Offene Todos</h1>
-        <div class="opened_todo">
-            <ul>
+        <select class="filter">
+            <option disabled selected hidden>Keine Sortierung verfügbar</option>
+            {% for filter in filters %}
+                <option value="{{ filter.value }}" {% if filter.value == activeFilter %}selected{% endif %} >{{ filter.label }}</option>
+            {% endfor %}
+        </select>
+
+    </div>
+    <div class="opened_todo">
+        <ul>
             {% for todo in todos %}
                 <li>
                     <form action="/todo/finish/{{ todo.id }}" method="POST" style="display: inline;">
@@ -36,7 +45,11 @@
                     </form>
                     <div class="content">
                         <h1>{{ todo.value }}</h1>
-                        <p>(Start: {{ todo.start }} - Deadline: {{ todo.deadline }})</p>
+                        {% if todo.deadline %}
+                            <p>(Start: {{ todo.start }} - Deadline: {{ todo.deadline }})</p>
+                        {% else %}
+                            <p>(Start: {{ todo.start }})</p>
+                        {% endif %}
                     </div>
                     <h4>Priorität: {{ todo.priority }}</h4>
                     <form action="/remove/{{ todo.id }}" method="POST" style="display: inline;">
@@ -46,7 +59,7 @@
                 </li>
             {% endfor %}
         </ul>
-        </div>
+    </div>
 
     <button class="toggle_button"><h1>Geschlossene Todos ▲</h1></button>
 
@@ -55,7 +68,8 @@
             {% for todo in closed_todos %}
                 <li>
                     <form action="/todo/reopen/{{ todo.id }}" method="POST" style="display: inline;">
-                        <button class="finished" type="submit" /></button>
+                        <button class="finished" type="submit"/>
+                        </button>
                     </form>
                     <div class="content">
                         <h1>{{ todo.value }}</h1>
@@ -69,22 +83,31 @@
             {% endfor %}
         </ul>
     </div>
-    </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-$(document).ready(function() {
-    $('.closed_todo').hide();
-    $('.toggle_button').click(function() {
-        $('.closed_todo').toggle();
-        var buttonHtml = $('.toggle_button').html();
-        if (buttonHtml === '<h1>Geschlossene Todos ▲</h1>') {
-            $('.toggle_button').html('<h1>Geschlossene Todos ▼</h1>');
-        } else {
-            $('.toggle_button').html('<h1>Geschlossene Todos ▲</h1>');
-        }
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.closed_todo').hide();
+        $('.toggle_button').click(function () {
+            $('.closed_todo').toggle();
+            var buttonHtml = $('.toggle_button').html();
+            if (buttonHtml === '<h1>Geschlossene Todos ▲</h1>') {
+                $('.toggle_button').html('<h1>Geschlossene Todos ▼</h1>');
+            } else {
+                $('.toggle_button').html('<h1>Geschlossene Todos ▲</h1>');
+            }
+        });
+        $('.filter').change(function () {
+            var selectedOption = $(this).children("option:selected").val();
+            $.ajax({
+                type: "POST",
+                url: "/filter/" + selectedOption,
+                success: function () {
+                    location.reload();
+                }
+            });
+        });
     });
-});
-
-    </script>
-    </body>
+</script>
+</body>
 </html>
