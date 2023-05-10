@@ -1,13 +1,14 @@
+import sys
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
+from sqlalchemy import func
 from wtforms import StringField, DateField, IntegerField
 from wtforms.validators import DataRequired, Optional
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
-app.config['SECRET_KEY'] = 'mysecretkey'
 db = SQLAlchemy(app)
 
 
@@ -39,7 +40,9 @@ activeFilter = 'none'
 def index():
     global activeFilter
     todos_query = Todo.query.filter_by(open=True)
-    if activeFilter == 'prio_asc':
+    if activeFilter == 'none':
+        todos_query = todos_query.order_by(Todo.position.asc())
+    elif activeFilter == 'prio_asc':
         todos_query = todos_query.order_by(Todo.priority.asc())
     elif activeFilter == 'prio_desc':
         todos_query = todos_query.order_by(Todo.priority.desc())
@@ -72,9 +75,16 @@ def add_todo():
         else:
             deadline = None
         priority = int(request.form['priority'])
-        todo = Todo(value=value, start=start, deadline=deadline, priority=priority, position=0, open=True)
+
+        max_position = db.session.query(func.max(Todo.position)).filter_by(open=True).scalar()
+        if max_position is not None:
+            position = max_position + 1
+        else:
+            position = 1
+        todo = Todo(value=value, start=start, deadline=deadline, priority=priority, position=position, open=True)
         db.session.add(todo)
         db.session.commit()
+        reset_positions()
     except ValueError:
         print(f'Todo konnte nicht erstellt werden')
     finally:
@@ -87,6 +97,7 @@ def remove_todo(id):
         todo = Todo.query.get_or_404(id)
         db.session.delete(todo)
         db.session.commit()
+        reset_positions()
     except ValueError:
         print(f'Todo konnte nicht gelöscht werden')
     finally:
@@ -95,11 +106,14 @@ def remove_todo(id):
 
 @app.route('/todo/finish/<int:id>', methods=['POST'])
 def finish_todo(id):
+    print('test')
     try:
         todo = Todo.query.get_or_404(id)
         todo.open = False
         todo.end = datetime.now()
+        todo.position = 9999
         db.session.commit()
+        reset_positions()
     except ValueError:
         print(f'Todo konnte nicht geschlossen werden')
     finally:
@@ -113,6 +127,7 @@ def reopen_todo(id):
         todo.open = True
         todo.end = datetime.now()
         db.session.commit()
+        reset_positions()
     except ValueError:
         print(f'Todo konnte nicht wieder geöffnet werden')
     finally:
@@ -125,6 +140,18 @@ def set_filter(filter):
     activeFilter = filter
     index()
     return redirect('/')
+
+
+def reset_positions():
+    todos = Todo.query.filter_by(open=True).order_by(Todo.position.asc())
+    i = 0
+
+    for todo in todos:
+        todo.position = i
+        db.session.add(todo)
+        i += 1
+
+    db.session.commit()
 
 
 if __name__ == '__main__':
