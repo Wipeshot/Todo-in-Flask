@@ -36,7 +36,8 @@
         <select class="filter">
             <option disabled selected hidden>Keine Sortierung verfügbar</option>
             {% for filter in filters %}
-                <option value="{{ filter.value }}" {% if filter.value == activeFilter %}selected{% endif %} >{{ filter.label }}</option>
+                <option value="{{ filter.value }}"
+                        {% if filter.value == activeFilter %}selected{% endif %}>{{ filter.label }}</option>
             {% endfor %}
         </select>
     </div>
