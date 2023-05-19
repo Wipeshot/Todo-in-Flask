@@ -168,6 +168,8 @@ def index():
 def add_todo():
     try:
         value = request.form['value']
+        if value is '':
+            return
         description = request.form.get('description')
         start = datetime.now()
         deadline_str = request.form.get('deadline')
