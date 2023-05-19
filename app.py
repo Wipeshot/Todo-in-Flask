@@ -110,10 +110,13 @@ def register():
         username = request.form['username']
         email = request.form['email']
         password = generate_hashed_password(request.form['password'])
-        db.session.add(User(username=username, email=email, password=password))
-        db.session.commit()
-        login_session(User.query.filter_by(username=username).first())
-        return redirect(url_for('index'))
+        if check_for_unique(username, email):
+            db.session.add(User(username=username, email=email, password=password))
+            db.session.commit()
+            login_session(User.query.filter_by(username=username).first())
+            return redirect(url_for('index'))
+        else:
+            return redirect('/register')
 
 
 @app.route('/login', methods=['GET', 'POST'])
