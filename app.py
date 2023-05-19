@@ -103,12 +103,10 @@ def require_login(func):
     return check_session
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
     session['user'] = None
-    if request.method == 'GET':
-        return render_template('register.html', form=RegisterForm)
-    elif request.method == 'POST':
+    if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
         password = generate_hashed_password(request.form['password'])
@@ -118,7 +116,7 @@ def register():
             login_session(User.query.filter_by(username=username).first())
             return redirect(url_for('index'))
         else:
-            return redirect('/register')
+            return redirect('/login')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -248,6 +246,7 @@ def reopen_todo(id):
 
 
 @app.route('/update/<int:id>', methods=['POST', 'GET'])
+@require_login
 def update_todo(id):
     if request.method == 'GET':
         todo = Todo.query.get_or_404(id)
@@ -270,6 +269,14 @@ def set_filter(filter):
     activeFilter = filter
     index()
     return redirect('/')
+
+
+@app.route('/logout')
+@require_login
+def logout():
+    session['user'] = None
+    session['exp'] = None
+    return redirect(url_for('login'))
 
 
 def reset_positions():

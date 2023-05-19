@@ -7,17 +7,20 @@
 </head>
 <body>
 <div class="todo__app">
+    <div class="nav">
+        <div>
+            <img class="logo" src="{{ url_for('static', filename='assets/logo.png') }}">
+        </div>
+        <form action="/logout" method="GET" class="logout__form">
+            <button class="logout" type="submit">Logout</button>
+        </form>
+    </div>
     <div class="header">
         <form action="/add" method="POST">
             <div class="input">
                 <div>
                     <label for="value">Titel:</label>
                     <input type="text" id="value" name="value" placeholder="">
-
-                </div>
-                <div>
-                    <label for="desc">Beschreibung:</label>
-                    <input type="text" id="desc" name="description" placeholder="">
                 </div>
                 <div>
                     <label for="deadline">Deadline:</label>
@@ -50,7 +53,6 @@
                     </form>
                     <div class="content">
                         <h1>{{ todo.value }}</h1>
-                        <p>{{ todo.description }}</p>
                         {% if todo.deadline %}
                             <p>(Start: {{ todo.start }} - Deadline: {{ todo.deadline }})</p>
                         {% else %}
@@ -58,18 +60,20 @@
                         {% endif %}
                     </div>
                     <h4>Priorität: {{ todo.priority }}</h4>
-                    <form action="update/{{ todo.id }}" method="GET">
-                        <button class="update"></button>
-                    </form>
-                    <form action="/remove/{{ todo.id }}" method="POST" style="display: inline;">
-                        <button class="delete" type="submit"></button>
-                    </form>
+                    <div class="ud">
+                        <form action="update/{{ todo.id }}" method="GET">
+                            <button class="update"></button>
+                        </form>
+                        <form action="/remove/{{ todo.id }}" method="POST" style="display: inline;">
+                            <button class="delete" type="submit"></button>
+                        </form>
+                    </div>
                 </li>
             {% endfor %}
         </ul>
     </div>
 
-    <button class="toggle_button"><h1>Geschlossene Todos ▲</h1></button>
+    <button class="toggle_button"><h1>Geschlossene Todos</h1></button>
 
     <div class="closed_todo">
         <ul>
@@ -81,7 +85,6 @@
                     </form>
                     <div class="content">
                         <h1>{{ todo.value }}</h1>
-                        <p>{{ todo.description }}</p>
                         <p>(Start: {{ todo.start }} - Beendet: {{ todo.end }})</p>
                     </div>
                     <h4>Priorität: {{ todo.priority }}</h4>

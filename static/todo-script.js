@@ -4,9 +4,9 @@ $(document).ready(function () {
         $('.closed_todo').toggle();
         var buttonHtml = $('.toggle_button').html();
         if (buttonHtml === '<h1>Geschlossene Todos ▲</h1>') {
-            $('.toggle_button').html('<h1>Geschlossene Todos ▼</h1>');
+            $('.toggle_button').html('<h1>Geschlossene Todos</h1>');
         } else {
-            $('.toggle_button').html('<h1>Geschlossene Todos ▲</h1>');
+            $('.toggle_button').html('<h1>Geschlossene Todos</h1>');
         }
     });
     $('.filter').change(function () {
