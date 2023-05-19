@@ -11,8 +11,13 @@
         <form action="/add" method="POST">
             <div class="input">
                 <div>
-                    <label for="value">Todo:</label>
+                    <label for="value">Titel:</label>
                     <input type="text" id="value" name="value" placeholder="">
+
+                </div>
+                <div>
+                    <label for="desc">Beschreibung:</label>
+                    <input type="text" id="desc" name="description" placeholder="">
                 </div>
                 <div>
                     <label for="deadline">Deadline:</label>
@@ -44,6 +49,7 @@
                     </form>
                     <div class="content">
                         <h1>{{ todo.value }}</h1>
+                        <p>{{ todo.description }}</p>
                         {% if todo.deadline %}
                             <p>(Start: {{ todo.start }} - Deadline: {{ todo.deadline }})</p>
                         {% else %}
@@ -51,6 +57,9 @@
                         {% endif %}
                     </div>
                     <h4>Priorität: {{ todo.priority }}</h4>
+                    <form action="update/{{ todo.id }}" method="GET">
+                        <button class="update"></button>
+                    </form>
                     <form action="/remove/{{ todo.id }}" method="POST" style="display: inline;">
                         <button class="delete" type="submit"></button>
                     </form>
@@ -71,6 +80,7 @@
                     </form>
                     <div class="content">
                         <h1>{{ todo.value }}</h1>
+                        <p>{{ todo.description }}</p>
                         <p>(Start: {{ todo.start }} - Beendet: {{ todo.end }})</p>
                     </div>
                     <h4>Priorität: {{ todo.priority }}</h4>
@@ -83,29 +93,6 @@
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('.closed_todo').hide();
-        $('.toggle_button').click(function () {
-            $('.closed_todo').toggle();
-            var buttonHtml = $('.toggle_button').html();
-            if (buttonHtml === '<h1>Geschlossene Todos ▲</h1>') {
-                $('.toggle_button').html('<h1>Geschlossene Todos ▼</h1>');
-            } else {
-                $('.toggle_button').html('<h1>Geschlossene Todos ▲</h1>');
-            }
-        });
-        $('.filter').change(function () {
-            var selectedOption = $(this).children("option:selected").val();
-            $.ajax({
-                type: "POST",
-                url: "/filter/" + selectedOption,
-                success: function () {
-                    location.reload();
-                }
-            });
-        });
-    });
-</script>
+<script src="{{ url_for('static', filename='todo-script.js') }}"></script>
 </body>
 </html>

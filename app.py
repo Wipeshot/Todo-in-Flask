@@ -15,6 +15,7 @@ db = SQLAlchemy(app)
 
 class TodoForm(FlaskForm):
     value = StringField('Value', validators=[DataRequired()])
+    description = StringField(validators=[Optional()])
     start = DateField('Start', validators=[DataRequired()])
     deadline = DateField('Deadline', validators=[Optional()])
     priority = IntegerField('Priority', validators=[DataRequired()])
@@ -22,7 +23,8 @@ class TodoForm(FlaskForm):
 
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.String(200), nullable=False)
+    value = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(500))
     start = db.Column(db.Date, nullable=False)
     end = db.Column(db.Date)
     deadline = db.Column(db.Date)
@@ -168,6 +170,7 @@ def index():
 def add_todo():
     try:
         value = request.form['value']
+        description = request.form.get('description')
         start = datetime.now()
         deadline_str = request.form.get('deadline')
         if deadline_str:
@@ -182,6 +185,7 @@ def add_todo():
         else:
             position = 1
         todo = Todo(value=value,
+                    description=description,
                     start=start,
                     deadline=deadline,
                     priority=priority,
@@ -199,7 +203,7 @@ def add_todo():
 
 @app.route('/remove/<int:id>', methods=['POST'])
 @require_login
-def remove_todo():
+def remove_todo(id):
     try:
         todo = Todo.query.get_or_404(id)
         db.session.delete(todo)
@@ -213,7 +217,7 @@ def remove_todo():
 
 @app.route('/todo/finish/<int:id>', methods=['POST'])
 @require_login
-def finish_todo():
+def finish_todo(id):
     print('test')
     try:
         todo = Todo.query.get_or_404(id)
@@ -230,7 +234,7 @@ def finish_todo():
 
 @app.route('/todo/reopen/<int:id>', methods=['POST'])
 @require_login
-def reopen_todo():
+def reopen_todo(id):
     try:
         todo = Todo.query.get_or_404(id)
         todo.open = True
@@ -243,9 +247,25 @@ def reopen_todo():
         return redirect('/')
 
 
+@app.route('/update/<int:id>', methods=['POST', 'GET'])
+def update_todo(id):
+    if request.method == 'GET':
+        todo = Todo.query.get_or_404(id)
+        return render_template('update.html', form=TodoForm, todo=todo)
+    elif request.method == 'POST':
+        todo = Todo.query.filter_by(id=id).first()
+        todo.value = request.form.get('value')
+        todo.description = request.form.get('description')
+        deadline_str = request.form.get('deadline')
+        todo.deadline = datetime.strptime(deadline_str, '%Y-%m-%d').date()
+        todo.priority = request.form.get('priority')
+        db.session.commit()
+        return redirect(url_for('index'))
+
+
 @app.route('/filter/<filter>', methods=['POST'])
 @require_login
-def set_filter():
+def set_filter(filter):
     global activeFilter
     activeFilter = filter
     index()
