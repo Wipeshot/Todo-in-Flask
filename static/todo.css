@@ -148,6 +148,12 @@ div.header form div.input {
     width: 80%;
 }
 
+@media screen and (max-width: 1500px) {
+    .content {
+        width: 60%;
+    }
+}
+
 .content h1 {
     font-size: 1rem;
     margin: 0.2rem 0 0.2rem;
@@ -239,7 +245,7 @@ div.open_header h1 {
     transition: right 0.3s ease-in-out;
     color: #FFFFFF;
     padding: 2rem;
-    box-shadow: -3rem 0 3rem rgba(31, 37, 39, 0.8);
+    box-shadow: -2rem 0 2rem rgba(31, 37, 39, 0.5);
 }
 
 .close-form {
@@ -322,4 +328,8 @@ div.open_header h1 {
     background: #6F868D;
     padding: 1rem;
     border-radius: 0.5rem;
+}
+
+.blocker {
+    height: 5rem;
 }
