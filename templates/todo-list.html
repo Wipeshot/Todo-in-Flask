@@ -45,9 +45,9 @@
         </select>
     </div>
     <div class="opened_todo">
-        <ul>
+        <ul class="list">
             {% for todo in todos %}
-                <li>
+                <li class="listElement" data-todo-id="{{ todo.id }}">
                     <form action="/todo/finish/{{ todo.id }}" method="POST" style="display: inline;">
                         <button class="open" type="submit"></button>
                     </form>
@@ -61,9 +61,7 @@
                     </div>
                     <h4>Priorität: {{ todo.priority }}</h4>
                     <div class="ud">
-                        <form action="update/{{ todo.id }}" method="GET">
-                            <button class="update"></button>
-                        </form>
+                        <button id="update" class="update"></button>
                         <form action="/remove/{{ todo.id }}" method="POST" style="display: inline;">
                             <button class="delete" type="submit"></button>
                         </form>
@@ -76,9 +74,9 @@
     <button class="toggle_button"><h1>Geschlossene Todos</h1></button>
 
     <div class="closed_todo">
-        <ul>
+        <ul class="list">
             {% for todo in closed_todos %}
-                <li>
+                <li class="listElement" data-todo="{{ todo }}">
                     <form action="/todo/reopen/{{ todo.id }}" method="POST" style="display: inline;">
                         <button class="finished" type="submit"/>
                         </button>

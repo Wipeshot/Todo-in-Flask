@@ -8,13 +8,13 @@ body {
     background: #384448;
 }
 
-ul {
+ul.list {
     list-style: none;
     width: 100%;
     padding: 0;
 }
 
-li {
+li.listElement {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -193,6 +193,9 @@ div.open_header h1 {
 }
 
 .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: calc(100% - 10rem);
     height: 5rem;
     background: #232A2D;
@@ -220,4 +223,102 @@ div.open_header h1 {
 .logo {
     max-height: 3rem;
     object-fit: cover;
+}
+
+
+
+
+.slider {
+    position: fixed;
+    top: 5rem;
+    right: 0;
+    width: 20%;
+    min-width: 20rem;
+    height: calc(100% - 9rem);
+    background: #1F2527;
+    transition: right 0.3s ease-in-out;
+    color: #FFFFFF;
+    padding: 2rem;
+}
+
+.close-form {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.close-button {
+    font-size: 2rem;
+    background: transparent;
+    border: none;
+    color: #FFFFFF;
+}
+
+.update-form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+    justify-content: space-between;
+}
+
+.title-input {
+    height: 100%;
+    font-size: 2rem;
+    text-overflow: ellipsis;
+}
+
+.open-button {
+    filter: invert(100%);
+}
+
+.desc-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.desc-label {
+    font-size: 1.5rem;
+}
+
+.desc-input {
+    height: 6rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    background-color: #6F868D;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    color: white;
+    margin-top: 1rem;
+    text-overflow: ellipsis;
+}
+
+.save-button {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #FFFFFF;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.form-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: black 0.2rem solid;
+    margin: 1rem 0;
+    padding-bottom: 1rem;
+}
+
+.form-input {
+    background: transparent;
+    color: #FFFFFF;
+    border: none;
+}
+
+.form-list {
+    background: #6F868D;
+    padding: 1rem;
+    border-radius: 0.5rem;
 }

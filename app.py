@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, timezone
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from sqlalchemy import func
@@ -258,7 +258,14 @@ def update_todo(id):
         todo.value = request.form.get('value')
         todo.description = request.form.get('description')
         deadline_str = request.form.get('deadline')
-        todo.deadline = datetime.strptime(deadline_str, '%Y-%m-%d').date()
+        if deadline_str:
+            try:
+                deadline = datetime.strptime(deadline_str, '%Y-%m-%d').date()
+            except ValueError:
+                return 'Ungültiges Datum', 400
+        else:
+            deadline = None
+        todo.deadline = deadline
         todo.priority = request.form.get('priority')
         db.session.commit()
         return redirect(url_for('index'))
@@ -279,6 +286,24 @@ def logout():
     session['user'] = None
     session['exp'] = None
     return redirect(url_for('login'))
+
+
+@app.route('/api/todo/<int:id>', methods=['GET'])
+@require_login
+def get_todo(id):
+    print(id)
+    todo = Todo.query.get_or_404(id)
+    todo_data = {
+        'id': todo.id,
+        'value': todo.value,
+        'description': todo.description,
+        'start': todo.start.isoformat(),
+        'end': todo.end.isoformat() if todo.end else None,
+        'deadline': todo.deadline.isoformat() if todo.deadline else None,
+        'priority': todo.priority,
+        'open': todo.open
+    }
+    return jsonify(todo_data)
 
 
 def reset_positions():
