@@ -239,6 +239,7 @@ div.open_header h1 {
     transition: right 0.3s ease-in-out;
     color: #FFFFFF;
     padding: 2rem;
+    box-shadow: -3rem 0 3rem rgba(31, 37, 39, 0.8);
 }
 
 .close-form {
