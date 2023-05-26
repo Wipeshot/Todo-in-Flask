@@ -48,7 +48,7 @@ $(document).ready(function () {
                 form.find('li').addClass('form-item');
                 form.find('input').addClass('form-input');
                 form.find('ul').addClass('form-list');
-                form.find('.open').addClass('open-button').attr('onClick', () => {
+                form.find('.open').attr('onClick', () => {
                     $.ajax({
                         url: '/todo/finish/' + todoId,
                         method: 'POST',

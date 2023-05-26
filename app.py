@@ -94,12 +94,11 @@ def require_login(func):
     @wraps(func)
     def check_session(*args, **kwargs):
         with app.app_context():
-            if 'exp' not in session or session['exp'] < datetime.now(timezone.utc):
+            if 'exp' not in session or session['exp'] is None or session['exp'] < datetime.now(timezone.utc):
                 return redirect(url_for('login'))
             elif User.query.filter_by(id=session['user']).first() is None:
                 return redirect(url_for('login'))
         return func(*args, **kwargs)
-
     return check_session
 
 
