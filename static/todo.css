@@ -277,7 +277,7 @@ div.open_header h1 {
 
 div:has( > .title-input) {
     display: grid;
-    grid-template-columns: 30% 70%;
+    grid-template-columns: 20% 80%;
 }
 
 div:has( > .title-input) label {

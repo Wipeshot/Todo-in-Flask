@@ -48,7 +48,7 @@ $(document).ready(function () {
                 form.find('li').addClass('form-item');
                 form.find('input').addClass('form-input');
                 form.find('ul').addClass('form-list');
-                form.find('.open').attr('onClick', () => {
+                form.find('.open').on('click', function () {
                     $.ajax({
                         url: '/todo/finish/' + todoId,
                         method: 'POST',
@@ -59,6 +59,7 @@ $(document).ready(function () {
                         }
                     });
                 });
+
 
                 slider.append(close);
                 slider.append(form);
