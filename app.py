@@ -149,7 +149,7 @@ def index():
     elif activeFilter == 'deadline_desc':
         todos_query = todos_query.order_by(Todo.deadline.desc())
     todos = todos_query.all()
-    finished_todos_query = Todo.query.filter_by(open=False)
+    finished_todos_query = Todo.query.filter_by(open=False, user=session['user'])
     finished_todos = finished_todos_query.all()
     filters = [
         {'value': 'none', 'label': 'Standard'},
