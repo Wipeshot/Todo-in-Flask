@@ -344,3 +344,39 @@ div:has( > .title-input) label {
 .blocker {
     height: 5rem;
 }
+
+.desc {
+    height: 2rem;
+    width: 2rem;
+    background: url("assets/description-icon.svg") no-repeat top;
+    background-size: 80% 80%;
+}
+
+.todo__title {
+    display: flex;
+}
+
+.cursor {
+    cursor: pointer;
+}
+
+.overlay {
+    display: none;
+    position: absolute;
+    transform: translate(-50%, -100%);
+    width: 20rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 0.3rem;
+    border: #FFFFFF solid 1px;
+    padding: 0.4rem;
+}
+
+.overlay h1 {
+    width: 100%;
+    color: #FFFFFF;
+}
+
+.overlay p {
+    width: 100%;
+    color: #FFFFFF;
+}

@@ -18,6 +18,39 @@ $(document).ready(function () {
             }
         });
     });
+
+    $(".desc").each(function () {
+        let descElement = $(this);
+        let todoId = descElement.closest('li').data('todo-id');
+        $.ajax({
+            url: '/api/todo/' + todoId,
+            method: 'GET',
+            success: function (todo) {
+                descElement.append('<div class="overlay">'
+                    + '<h1>Beschreibung: </h1>'
+                    + '<p>' + todo.description + '</p>'
+                    + '</div>');
+            },
+            error: function () {
+                console.log('Fehler beim Abrufen des Todos von der API: ' + this.error);
+                descElement.append('<div class="overlay">'
+                    + '<p>Fehler beim Abrufen der Beschreibung</p>'
+                    + '</div>');
+            }
+        });
+    });
+
+    $(".desc").hover(
+        function () {
+            $(this).addClass("cursor")
+            $(this).find(".overlay").show();
+        },
+        function () {
+            $(this).removeClass("cursor")
+            $(this).find(".overlay").hide();
+        }
+    );
+
     $('.update').click(function () {
         let todoId = $(this).closest('li').data('todo-id');
         $.ajax({

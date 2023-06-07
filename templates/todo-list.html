@@ -53,7 +53,12 @@
                         <button class="open" type="submit"></button>
                     </form>
                     <div class="content">
-                        <h1>{{ todo.value }}</h1>
+                        <div class="todo__title">
+                            <h1>{{ todo.value }}</h1>
+                            {% if todo.description %}
+                                <div class="desc"></div>
+                            {% endif %}
+                        </div>
                         {% if todo.deadline %}
                             <p>(Start: {{ todo.start }} - Deadline: {{ todo.deadline }})</p>
                         {% else %}
@@ -77,13 +82,18 @@
     <div class="closed_todo">
         <ul class="list">
             {% for todo in closed_todos %}
-                <li class="listElement" data-todo="{{ todo }}">
+                <li class="listElement" data-todo-id="{{ todo.id }}">
                     <form action="/todo/reopen/{{ todo.id }}" method="POST" style="display: inline;">
                         <button class="finished" type="submit"/>
                         </button>
                     </form>
                     <div class="content">
-                        <h1>{{ todo.value }}</h1>
+                        <div class="todo__title">
+                            <h1>{{ todo.value }}</h1>
+                            {% if todo.description %}
+                                <div class="desc"></div>
+                            {% endif %}
+                        </div>
                         <p>(Start: {{ todo.start }} - Beendet: {{ todo.end }})</p>
                     </div>
                     <h4>Priorität: {{ todo.priority }}</h4>
