@@ -136,7 +136,7 @@ button {
 @media screen and (max-width: 1000px) {
 
     body {
-        padding-top: 10rem;
+
     }
 
     .nav button {
@@ -145,7 +145,7 @@ button {
 
     .content {
         flex-direction: column;
-        width: 20rem;
+        width: 35rem;
         max-width: 85%;
         margin: auto;
         max-height: 300%;
@@ -163,9 +163,9 @@ button {
         position: absolute;
         width: 70rem;
         height: 0.125rem;
-        max-width: 18rem;
+        max-width: 29rem;
         background: black;
-        top: calc(50% + 10rem);
+        top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
