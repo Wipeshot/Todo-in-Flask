@@ -93,7 +93,7 @@ button {
 }
 
 
-@media (min-width: 721px) {
+@media screen and (min-width: 1000px) {
     .hor_line {
         position: absolute;
         min-width: 0.125rem;
@@ -132,7 +132,12 @@ button {
     }
 }
 
-@media (max-width: 720px) {
+@media screen and (max-width: 1000px) {
+
+    body {
+        padding-top: 10rem;
+    }
+
     .nav button {
         display: none;
     }
@@ -159,7 +164,7 @@ button {
         height: 0.125rem;
         max-width: 18rem;
         background: black;
-        top: 50%;
+        top: calc(50% + 8rem);
         left: 50%;
         transform: translate(-50%, -50%);
     }

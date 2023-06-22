@@ -67,7 +67,12 @@ div.header form div.input {
     margin-right: 1rem;
 }
 
-@media (max-width: 720px) {
+@media screen and  (max-width: 1000px) {
+
+    body {
+        padding-top: 10rem;
+    }
+
     div.header form {
         flex-direction: column;
     }
@@ -75,6 +80,7 @@ div.header form div.input {
     div.header form div.input {
         flex-direction: column;
     }
+
     div.header form div.input div {
         display: flex;
         justify-content: space-between;
@@ -228,7 +234,7 @@ div.open_header h1 {
     margin-bottom: 2rem;
 }
 
-@media (max-width: 720px) {
+@media screen and  (max-width: 720px) {
     .nav button {
         display: none;
     }
@@ -402,10 +408,11 @@ div:has( > .title-input) label {
 }
 
 @media (max-width: 720px) {
-   .listElement {
-       flex-direction: column;
-       padding: 0;
-   }
+    .listElement {
+        flex-direction: column;
+        padding: 0;
+    }
+
     .content {
         display: flex;
         flex-direction: column;
