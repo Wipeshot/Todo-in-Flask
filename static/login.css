@@ -164,7 +164,7 @@ button {
         height: 0.125rem;
         max-width: 18rem;
         background: black;
-        top: calc(50% + 8rem);
+        top: calc(50% + 10rem);
         left: 50%;
         transform: translate(-50%, -50%);
     }
