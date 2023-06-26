@@ -68,26 +68,6 @@ div.header form div.input {
     margin-right: 1rem;
 }
 
-@media screen and  (max-width: 1000px) {
-
-    body {
-        padding-top: 10rem;
-    }
-
-    div.header form {
-        flex-direction: column;
-    }
-
-    div.header form div.input {
-        flex-direction: column;
-    }
-
-    div.header form div.input div {
-        display: flex;
-        justify-content: space-between;
-    }
-}
-
 .opened_todo {
     width: calc(100% - 10rem);
     border: black 1px solid;
@@ -233,12 +213,6 @@ div.open_header h1 {
     padding-left: 5rem;
     padding-right: 5rem;
     margin-bottom: 2rem;
-}
-
-@media screen and  (max-width: 720px) {
-    .nav button {
-        display: none;
-    }
 }
 
 .logout {
@@ -406,26 +380,4 @@ div:has( > .title-input) label {
 .overlay p {
     width: 100%;
     color: #FFFFFF;
-}
-
-@media (max-width: 720px) {
-    .listElement {
-        flex-direction: column;
-        padding: 0;
-    }
-
-    .content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 90%;
-    }
-
-    .content p {
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-        max-width: 100%;
-    }
 }
