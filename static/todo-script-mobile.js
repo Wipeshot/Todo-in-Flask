@@ -27,7 +27,7 @@ $(document).ready(function () {
             method: 'GET',
             success: function (todo) {
                 descElement.append('<div class="overlay">'
-                    + '<h1>Beschreibung: </h1>'
+                    + '<h1>Beschreibung</h1>'
                     + '<p>' + todo.description + '</p>'
                     + '</div>');
             },
