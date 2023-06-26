@@ -99,6 +99,7 @@ def require_login(func):
             elif User.query.filter_by(id=session['user']).first() is None:
                 return redirect(url_for('login'))
         return func(*args, **kwargs)
+
     return check_session
 
 
@@ -158,8 +159,14 @@ def index():
         {'value': 'deadline_asc', 'label': 'Deadline (aufsteigend)'},
         {'value': 'deadline_desc', 'label': 'Deadline (absteigend)'}
     ]
-    return render_template('todo-list.html', todos=todos, closed_todos=finished_todos, filters=filters,
-                           activeFilter=activeFilter)
+    user_agent = request.headers.get('User-Agent')
+    print(user_agent)
+    if 'Mobile' in user_agent:
+        return render_template('todo-list-mobile.html', todos=todos, closed_todos=finished_todos, filters=filters,
+                               activeFilter=activeFilter)
+    else:
+        return render_template('todo-list.html', todos=todos, closed_todos=finished_todos, filters=filters,
+                               activeFilter=activeFilter)
 
 
 @app.route('/add', methods=['POST'])

@@ -145,7 +145,7 @@ button {
 
     .content {
         flex-direction: column;
-        width: 35rem;
+        width: 98vw;
         max-width: 85%;
         margin: auto;
         max-height: 300%;
