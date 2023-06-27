@@ -46,8 +46,9 @@ body {
     align-items: center;
     background: #6F868D;
     border: black 1px solid;
-    margin: 2rem;
+    margin: 4rem;
     padding: 0 3rem 3rem 3rem;
+    border-radius: 3rem;
 }
 
 .login_form {
@@ -70,12 +71,16 @@ input {
     font-size: 2rem;
     padding: 0.5rem;
     margin-bottom: 1rem;
+    border-radius: 1rem;
+    background: white;
 }
 
 button {
     font-size: 2rem;
     padding: 0.5rem;
     width: 100%;
+    border-radius: 1rem;
+    background: white;
 }
 
 .register_form {

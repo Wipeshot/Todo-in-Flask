@@ -99,7 +99,6 @@ def require_login(func):
             elif User.query.filter_by(id=session['user']).first() is None:
                 return redirect(url_for('login'))
         return func(*args, **kwargs)
-
     return check_session
 
 
