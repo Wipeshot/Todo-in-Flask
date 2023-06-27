@@ -123,7 +123,11 @@ def register():
 def login():
     session['user'] = None
     if request.method == 'GET':
-        return render_template('login.html', form=LoginForm)
+        user_agent = request.headers.get('User-Agent')
+        if 'Mobile' in user_agent:
+            return render_template('login-mobile.html', form=LoginForm)
+        else:
+            return render_template('login.html', form=LoginForm)
     elif request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
