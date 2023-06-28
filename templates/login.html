@@ -19,9 +19,9 @@
         <form class="login_form" action="/login" method="POST">
             <h1>Login</h1>
             <label for="username">Benutzername</label>
-            <input id="username" name="username" type="text"/>
-            <label for="password">Passwort</label>
-            <input id="password" name="password" type="password"/>
+            <input id="username" name="username" type="text" required />
+            <label for="password" >Passwort</label>
+            <input id="password" name="password" type="password" required />
             <button type="submit">Login</button>
         </form>
         <section class="hor_line">
@@ -30,11 +30,11 @@
         <form class="register_form" action="/register" method="POST">
             <h1>Registrieren</h1>
             <label for="username">Benutzername</label>
-            <input id="username" name="username" type="text"/>
+            <input id="username" name="username" type="text" required />
             <label for="email">EMail (Optional)</label>
             <input id="email" name="email" type="email"/>
             <label for="password">Passwort</label>
-            <input id="password" name="password" type="password"/>
+            <input id="password" name="password" type="password" required />
             <button type="submit">Registrieren</button>
         </form>
     </div>
