@@ -48,7 +48,7 @@ class LoginForm(FlaskForm):
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False)
-    email = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=True)
     password = db.Column(db.String(50), nullable=False)
 
 
@@ -84,7 +84,7 @@ def check_login(username, password):
 def check_for_unique(username, email):
     username_unique = User.query.filter_by(username=username).first()
     email_unique = User.query.filter_by(email=email).first()
-    if username_unique is None and email_unique is None:
+    if username_unique is None and email_unique.email == "":
         return True
     else:
         return False
@@ -110,6 +110,7 @@ def register():
         email = request.form['email']
         password = generate_hashed_password(request.form['password'])
         if username == "" or password == "":
+            print("Empty")
             return redirect('/login')
         if check_for_unique(username, email):
             db.session.add(User(username=username, email=email, password=password))
@@ -117,6 +118,7 @@ def register():
             login_session(User.query.filter_by(username=username).first())
             return redirect(url_for('index'))
         else:
+            print("Error")
             return redirect('/login')
 
 
