@@ -109,6 +109,8 @@ def register():
         username = request.form['username']
         email = request.form['email']
         password = generate_hashed_password(request.form['password'])
+        if username == "" or password == "":
+            return redirect('/login')
         if check_for_unique(username, email):
             db.session.add(User(username=username, email=email, password=password))
             db.session.commit()
