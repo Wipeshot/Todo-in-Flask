@@ -83,14 +83,8 @@ def check_login(username, password):
 
 def check_for_unique(username, email):
     username_unique = User.query.filter_by(username=username).first()
-    email_unique = User.query.filter_by(email=email).first()
     if username_unique is None:
-        if email_unique.email is None:
-            return True
-        else:
-            if email_unique.email == "":
-                return True
-            return False
+        return True
     else:
         return False
 
@@ -118,6 +112,8 @@ def register():
             print("Empty")
             return redirect('/login')
         if check_for_unique(username, email):
+            if email is None:
+                email = ""
             db.session.add(User(username=username, email=email, password=password))
             db.session.commit()
             login_session(User.query.filter_by(username=username).first())
